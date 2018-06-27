@@ -12,27 +12,27 @@
  * from Marfeel Solutions SL.
  */
 
-package com.marfeel.miro.handler;
+package com.marfeel.miro.handler.fetch;
 
 import com.marfeel.miro.handler.MiroHandler;
-import com.marfeel.miro.service.MiroService;
+import com.marfeel.miro.service.FetchService;
 import io.vertx.core.Future;
 import io.vertx.ext.web.RoutingContext;
 
 import java.net.URL;
 import java.util.Objects;
 
-public class DefaultHandler implements MiroHandler {
+public class FetchHandler implements MiroHandler {
 
-    private final MiroService miroService;
+    private final FetchService fetchService;
 
-    public DefaultHandler(MiroService miroService) {
-        this.miroService = Objects.requireNonNull(miroService, "MiroService can not be null");
+    public FetchHandler(FetchService fetchService) {
+        this.fetchService = Objects.requireNonNull(fetchService, "FetchService can not be null");
     }
 
     @Override
     public Future<String> processRequest(RoutingContext context, URL url) {
-        return miroService.readAndDecorateUrl(url);
+        return fetchService.fetchUrl(url);
     }
 
 }

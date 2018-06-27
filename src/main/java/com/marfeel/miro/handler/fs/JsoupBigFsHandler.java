@@ -12,45 +12,41 @@
  * from Marfeel Solutions SL.
  */
 
-package com.marfeel.miro.handler;
+package com.marfeel.miro.handler.fs;
 
-import com.marfeel.miro.service.MiroService;
-import io.vertx.core.Handler;
+import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Objects;
+import java.net.URL;
 
-public class AmpHandler implements Handler<RoutingContext> {
+public class JsoupBigFsHandler extends AbstractFsHandler {
 
-    private final MiroService miroService;
-    private final String html;
+    public JsoupBigFsHandler(Vertx vertx) {
+        this(vertx, "hardcoded.html");
+    }
 
-    public AmpHandler(MiroService miroService) {
-        this.miroService = Objects.requireNonNull(miroService, "MiroService can not be null");
-        try {
-            this.html = new String(Files.readAllBytes(Paths.get(this.getClass().getResource("/hardcoded.html").getPath())));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    protected JsoupBigFsHandler(Vertx vertx, String filename) {
+        super(vertx, filename);
     }
 
     @Override
-    public void handle(RoutingContext routingContext) {
-        // TODO add needed params or whatever to retrieve amp version
-        Document document = Jsoup.parse(this.html);
+    public Future<String> processRequest(RoutingContext context, URL url) {
+        return super.processRequest(context, url).compose(this::applyJsoupASaco);
+    }
+
+    Future<String> applyJsoupASaco(String html) {
+        Document document = Jsoup.parse(html);
         Element head = document.select("head").first();
         Element link = new Element(Tag.valueOf("meta"), "")
                 .attr("name", "marfeel-meta")
                 .attr("content", "Powered by Marfeel");
         head.appendChild(link);
-
-        routingContext.response().setStatusCode(200).end(document.html() /*"{\"amp\": true}"*/);
+        return Future.succeededFuture(document.html());
     }
+
 }

@@ -2,7 +2,7 @@ spring:
   main:
     banner-mode: "off"
 vertx:
-  worker-pool-size: 20
+  worker-pool-size: 200
   uploads-dir: file-uploads
   verticle:
     deploy-timeout-ms: 15000

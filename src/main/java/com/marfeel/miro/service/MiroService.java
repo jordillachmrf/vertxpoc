@@ -21,24 +21,20 @@ public class MiroService {
     }
 
     public Future<String> readAndDecorateUrl(URL url) {
-        return this.fetchService.fetchUrl(url)
-                .compose(this::handleResult);
+        return this.fetchService.fetchUrl(url).compose(this::handleResult);
     }
 
     private Future<String> handleResult(String result) {
-        if (false) {
-            return Future.succeededFuture(result);
-        } else {
-            //sync code, maybe we should execute it in a worker thread, this should be improved a lot!
-            Document[] docs = new Document[]{Jsoup.parse(result)};
-            this.analyzerList.stream().forEach(analyzer -> {
-                if (analyzer.applyDecorators(docs[0])) {
-                    analyzer.getDecorators().forEach(decorator -> {
-                        docs[0] = ((MiroDecorator) decorator).decorate(docs[0]);
-                    });
-                }
-            });
-            return Future.succeededFuture(docs[0].html());
-        }
+        //sync code, maybe we should execute it in a worker thread, this should be improved a lot!
+        Document[] docs = new Document[]{Jsoup.parse(result)};
+        this.analyzerList.stream().forEach(analyzer -> {
+            if (analyzer.applyDecorators(docs[0])) {
+                analyzer.getDecorators().forEach(decorator -> {
+                    docs[0] = ((MiroDecorator) decorator).decorate(docs[0]);
+                });
+            }
+        });
+
+        return Future.succeededFuture(docs[0].html());
     }
 }

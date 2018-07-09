@@ -8,7 +8,7 @@ vertx:
     deploy-timeout-ms: 15000
     instances: 4
 http:
-  port: 8080
+  port: 80
 http-client:
   max-pool-size: 8196
   connect-timeout-ms: 1000

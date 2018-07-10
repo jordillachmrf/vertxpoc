@@ -1,9 +1,7 @@
 package com.marfeel.miro.configuration;
 
-import com.marfeel.miro.service.analyzer.DoNothingAnalyzer;
-import com.marfeel.miro.service.analyzer.TitleAnalyzer;
-import com.marfeel.miro.service.decorator.DoNothingDecorator;
-import com.marfeel.miro.service.decorator.TitleDecorator;
+import com.marfeel.miro.service.analyzer.MetaAnalyzer;
+import com.marfeel.miro.service.decorator.MetaDecorator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,8 +16,8 @@ public class ComponentsConfiguration {
     }
 */
     @Bean
-    public TitleAnalyzer titleAnalyzer() {
-        return new TitleAnalyzer(asList(new TitleDecorator()));
+    public MetaAnalyzer metaAnalyzer() {
+        return new MetaAnalyzer(asList(new MetaDecorator()));
     }
 
 }

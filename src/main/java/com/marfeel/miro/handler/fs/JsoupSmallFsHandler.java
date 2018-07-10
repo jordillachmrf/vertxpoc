@@ -22,5 +22,4 @@ public class JsoupSmallFsHandler extends JsoupBigFsHandler {
         super(vertx, "hardcoded2.html");
     }
 
-
 }

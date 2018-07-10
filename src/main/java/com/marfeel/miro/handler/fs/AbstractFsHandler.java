@@ -1,11 +1,12 @@
 package com.marfeel.miro.handler.fs;
 
 import com.marfeel.miro.handler.MiroHandler;
+import com.marfeel.miro.handler.MiroRequest;
+import com.marfeel.miro.handler.MiroResponse;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -21,12 +22,12 @@ public abstract class AbstractFsHandler implements MiroHandler {
     }
 
     @Override
-    public Future<String> processRequest(RoutingContext context, URL url) {
+    public Future<MiroResponse> processRequest(RoutingContext context, MiroRequest request) {
         Future future = Future.future();
 
         vertx.fileSystem().readFile(path.toString(), ar -> {
             if (ar.succeeded()) {
-                future.complete(ar.result().toString());
+                future.complete(new MiroResponse(ar.result().toString(), null, 200));
             } else {
                 future.fail(ar.cause());
             }

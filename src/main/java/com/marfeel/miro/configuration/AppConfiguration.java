@@ -68,6 +68,8 @@ public class AppConfiguration {
         options.setHttp2MaxPoolSize(maxPoolSize);
         options.setKeepAlive(true);
         options.setVerifyHost(false);
+        options.setTryUseCompression(true);
+        options.setMaxRedirects(8);
         //options.setProtocolVersion(HttpVersion.HTTP_2);
         /*options.setHttp2ClearTextUpgrade(true).
                 setSsl(true).

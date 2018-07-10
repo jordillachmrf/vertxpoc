@@ -1,13 +1,13 @@
 package com.marfeel.miro.service.analyzer;
 
-import com.marfeel.miro.service.decorator.TitleDecorator;
+import com.marfeel.miro.service.decorator.MetaDecorator;
 import org.jsoup.nodes.Document;
 
 import java.util.List;
 
-public class TitleAnalyzer extends AbstractAnalyzer<TitleDecorator> {
+public class MetaAnalyzer extends AbstractAnalyzer<MetaDecorator> {
 
-    public TitleAnalyzer(List<TitleDecorator> decorators) {
+    public MetaAnalyzer(List<MetaDecorator> decorators) {
         super(decorators);
     }
 

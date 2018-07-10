@@ -15,11 +15,12 @@
 package com.marfeel.miro.handler.fetch;
 
 import com.marfeel.miro.handler.MiroHandler;
+import com.marfeel.miro.handler.MiroRequest;
+import com.marfeel.miro.handler.MiroResponse;
 import com.marfeel.miro.service.FetchService;
 import io.vertx.core.Future;
 import io.vertx.ext.web.RoutingContext;
 
-import java.net.URL;
 import java.util.Objects;
 
 public class FetchHandler implements MiroHandler {
@@ -31,8 +32,8 @@ public class FetchHandler implements MiroHandler {
     }
 
     @Override
-    public Future<String> processRequest(RoutingContext context, URL url) {
-        return fetchService.fetchUrl(url);
+    public Future<MiroResponse> processRequest(RoutingContext context, MiroRequest request) {
+        return fetchService.fetchUrl(request);
     }
 
 }

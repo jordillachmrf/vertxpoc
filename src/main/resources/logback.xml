@@ -53,7 +53,7 @@
   <logger name="io.vertx" level="WARN"/>
 
 
-  <root level="WARN">
+  <root level="INFO">
     <appender-ref ref="ASYNC" />
   </root>
 

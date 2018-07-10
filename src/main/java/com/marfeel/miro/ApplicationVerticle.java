@@ -5,7 +5,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.CorsHandler;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -25,14 +24,14 @@ public class ApplicationVerticle extends AbstractVerticle {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         Router router = Router.router(vertx);
-        router.route().handler(CorsHandler.create("*"));
-
+        //router.route().handler(CorsHandler.create("*"));
         routes.accept(router);
 
         HttpServerOptions serverOptions = new HttpServerOptions();
         serverOptions.setMaxInitialLineLength(3 * HttpServerOptions.DEFAULT_MAX_INITIAL_LINE_LENGTH);
         serverOptions.setMaxChunkSize(3 * HttpServerOptions.DEFAULT_MAX_CHUNK_SIZE);
         serverOptions.setCompressionSupported(true);
+        serverOptions.setCompressionLevel(4); // default is 6
 
         vertx.createHttpServer(serverOptions).requestHandler(router::accept).listen(this.port, listen -> {
             if (listen.succeeded()) {

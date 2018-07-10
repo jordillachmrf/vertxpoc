@@ -16,18 +16,19 @@ public class FetchService {
     private final Logger L = LoggerFactory.getLogger(FetchService.class);
 
     private final HttpClient httpClient;
+    private final long fetchTimeOut;
 
-    public FetchService(HttpClient httpClient) {
+    public FetchService(HttpClient httpClient, long fetchTimeOut) {
         this.httpClient = Objects.requireNonNull(httpClient, "HttpClient can not be null");
+        this.fetchTimeOut = fetchTimeOut <= 0 ? 1000 : fetchTimeOut;
     }
 
     public Future<MiroResponse> fetchUrl(MiroRequest miroRequest) {
         Future<MiroResponse> future = Future.future();
 
-        HttpClientRequest request = httpClient.requestAbs(HttpMethod.GET, miroRequest.getURL().toString(), response -> {
-            response.bodyHandler(buffer -> future.complete(new MiroResponse(buffer.toString(), response.headers(), response.statusCode())))
-                                .exceptionHandler(exception -> future.fail(exception));
-        }).setFollowRedirects(false);
+        HttpClientRequest request = httpClient.requestAbs(HttpMethod.GET, miroRequest.getURL().toString(),
+                response -> response.bodyHandler(buffer -> future.complete(new MiroResponse(buffer.toString(), response.headers(), response.statusCode())))
+        ).exceptionHandler(exception -> future.fail(exception)).setTimeout(fetchTimeOut).setFollowRedirects(false);
 
         miroRequest.getHeaders().names().forEach(header -> {
            if (!"Host".equalsIgnoreCase(header) && !"Accept-Encoding".equalsIgnoreCase(header)) {

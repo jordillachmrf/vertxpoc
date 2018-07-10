@@ -23,6 +23,6 @@ public class ServiceConfiguration {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public FetchService fetchService(HttpClient httpClient) {
-        return new FetchService(httpClient);
+        return new FetchService(httpClient, 15000);
     }
 }

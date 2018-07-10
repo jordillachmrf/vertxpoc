@@ -74,10 +74,10 @@ public interface MiroHandler extends Handler<RoutingContext> {
             String uri = context.request().absoluteURI();
 
             if (L.isInfoEnabled()) {
-                L.info("forwarded proto is %s", protocol);
-                L.info("forwarded host is %s", forwardedhost);
-                L.info("host is %s", host);
-                L.info("absoluteUri is %s", uri);
+                L.info("forwarded proto is {}", protocol);
+                L.info("forwarded host is {}", forwardedhost);
+                L.info("host is {}", host);
+                L.info("absoluteUri is {}", uri);
             }
 
             url = new URL(protocol + forwardedhost + uri);

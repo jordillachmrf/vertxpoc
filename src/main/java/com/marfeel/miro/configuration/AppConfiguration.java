@@ -68,11 +68,11 @@ public class AppConfiguration {
             .setHttp2MaxPoolSize(maxPoolSize).setKeepAlive(true).setVerifyHost(false).setMaxRedirects(8);
         //options.setTryUseCompression(true);
         //options.setProtocolVersion(HttpVersion.HTTP_2);
-        /*options.setHttp2ClearTextUpgrade(true).
+        options.setHttp2ClearTextUpgrade(true).
                 setSsl(true).
-                setUseAlpn(true).
-                setProtocolVersion(HttpVersion.HTTP_2).
-                setTrustAll(true);*/
+                //setUseAlpn(true).
+                //setProtocolVersion(HttpVersion.HTTP_2).
+                setTrustAll(true);
         return vertx.createHttpClient(options);
     }
 }

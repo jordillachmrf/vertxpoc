@@ -30,7 +30,7 @@ public class RoutingConfiguration {
     public static final String JSB_PATH = "/jsbig";
 
     public static final String HEALTH_PATH = "/health";
-    public static final String DEFAULT_PATH = "/";
+    public static final String DEFAULT_PATH = "/*";
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

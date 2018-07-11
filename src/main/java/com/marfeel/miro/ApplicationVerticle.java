@@ -30,8 +30,8 @@ public class ApplicationVerticle extends AbstractVerticle {
         HttpServerOptions serverOptions = new HttpServerOptions();
         serverOptions.setMaxInitialLineLength(3 * HttpServerOptions.DEFAULT_MAX_INITIAL_LINE_LENGTH);
         serverOptions.setMaxChunkSize(3 * HttpServerOptions.DEFAULT_MAX_CHUNK_SIZE);
-        serverOptions.setCompressionSupported(true);
-        serverOptions.setCompressionLevel(4); // default is 6
+        //serverOptions.setCompressionSupported(true);
+        //serverOptions.setCompressionLevel(4); // default is 6
 
         vertx.createHttpServer(serverOptions).requestHandler(router::accept).listen(this.port, listen -> {
             if (listen.succeeded()) {

@@ -22,6 +22,11 @@ public abstract class AbstractFsHandler implements MiroHandler {
     }
 
     @Override
+    public Future<MiroRequest> parseRequest(RoutingContext context) {
+        return Future.succeededFuture();
+    }
+
+    @Override
     public Future<MiroResponse> processRequest(RoutingContext context, MiroRequest request) {
         Future future = Future.future();
 

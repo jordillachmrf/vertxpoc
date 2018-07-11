@@ -4,15 +4,20 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 public interface MiroHandler extends Handler<RoutingContext> {
 
     Logger L = LoggerFactory.getLogger(MiroHandler.class);
+
+    Pattern PATTERN = Pattern.compile("^\\s*(http(s?)://)?(www\\.)?");
+    String EMPTY = "";
 
     String UNEXPECTED_ERROR_HTML = "<html>\n" +
             "<body>\n" +
@@ -39,7 +44,6 @@ public interface MiroHandler extends Handler<RoutingContext> {
 
     Future<MiroResponse> processRequest(RoutingContext context, MiroRequest url);
 
-    // TODO hay que propagar los headers tal cual los recibimos, es algo que no hacemos
     default void handleResult(AsyncResult<MiroResponse> responseResult, RoutingContext context) {
         if (responseResult.succeeded()) {
             final MiroResponse response = responseResult.result();
@@ -53,7 +57,11 @@ public interface MiroHandler extends Handler<RoutingContext> {
                 context.response().end();
             }
         } else {
-            context.response().setStatusCode(500).end(responseResult.cause().getMessage());
+            // TImeoutHandler sets a 503
+            if (!context.failed()) {
+                context.response().setStatusCode(500).end(responseResult.cause() != null && responseResult.cause().getMessage() != null ?
+                        responseResult.cause().getMessage() : "Unknown reason");
+            }
         }
     }
 
@@ -69,9 +77,9 @@ public interface MiroHandler extends Handler<RoutingContext> {
             url = new URL(qp.startsWith("http") ? qp : "http://" + qp);
         } else {
             String protocol = context.request().getHeader("X-Forwarded-Proto");
-            String forwardedhost = context.request().getHeader("X-Forwarded-Host");
+            String forwardedhost = "origin." + normalizeForwardedHost(context.request().getHeader("X-Forwarded-Host"));
             String host = context.request().getHeader("Host");
-            String uri = context.request().absoluteURI();
+            String uri = context.request().uri();
 
             if (L.isInfoEnabled()) {
                 L.info("forwarded proto is {}", protocol);
@@ -80,9 +88,17 @@ public interface MiroHandler extends Handler<RoutingContext> {
                 L.info("absoluteUri is {}", uri);
             }
 
-            url = new URL(protocol + forwardedhost + uri);
+            url = new URL(protocol + "://" + forwardedhost + uri);
         }
         return Future.succeededFuture(url);
     }
 
+    default String normalizeForwardedHost(String forwardedHost) {
+        String normalizedUri = PATTERN.matcher(forwardedHost).replaceFirst(EMPTY).trim();
+        String normalizedDomain = StringUtils.removeEnd(normalizedUri, "/");
+        if(normalizedDomain.contains("/")){
+            return normalizedDomain.substring(0, normalizedDomain.indexOf("/"));
+        }
+        return normalizedDomain;
+    }
 }

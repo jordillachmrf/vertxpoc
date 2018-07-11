@@ -64,12 +64,9 @@ public class AppConfiguration {
             @Value("${http-client.max-pool-size}") int maxPoolSize,
             @Value("${http-client.connect-timeout-ms}") int connectTimeoutMs,
             Vertx vertx) {
-        final HttpClientOptions options = new HttpClientOptions().setMaxPoolSize(maxPoolSize).setConnectTimeout(connectTimeoutMs);
-        options.setHttp2MaxPoolSize(maxPoolSize);
-        options.setKeepAlive(true);
-        options.setVerifyHost(false);
-        options.setTryUseCompression(true);
-        options.setMaxRedirects(8);
+        final HttpClientOptions options = new HttpClientOptions().setMaxPoolSize(maxPoolSize).setConnectTimeout(connectTimeoutMs)
+            .setHttp2MaxPoolSize(maxPoolSize).setKeepAlive(true).setVerifyHost(false).setMaxRedirects(8);
+        //options.setTryUseCompression(true);
         //options.setProtocolVersion(HttpVersion.HTTP_2);
         /*options.setHttp2ClearTextUpgrade(true).
                 setSsl(true).

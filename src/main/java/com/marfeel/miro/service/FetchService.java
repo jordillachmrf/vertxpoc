@@ -31,7 +31,7 @@ public class FetchService {
         ).exceptionHandler(exception -> future.fail(exception)).setTimeout(fetchTimeOut).setFollowRedirects(false);
 
         miroRequest.getHeaders().names().forEach(header -> {
-           if (!"Host".equalsIgnoreCase(header) && !"Accept-Encoding".equalsIgnoreCase(header)) {
+           if (!"Accept-Encoding".equalsIgnoreCase(header)) {
                request.putHeader(header, miroRequest.getHeaders().get(header));
            }
         });

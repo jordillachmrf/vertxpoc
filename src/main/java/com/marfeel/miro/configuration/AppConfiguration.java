@@ -66,11 +66,9 @@ public class AppConfiguration {
             Vertx vertx) {
         final HttpClientOptions options = new HttpClientOptions().setMaxPoolSize(maxPoolSize).setConnectTimeout(connectTimeoutMs)
             .setHttp2MaxPoolSize(maxPoolSize).setKeepAlive(true).setVerifyHost(false).setMaxRedirects(8);
-        //options.setTryUseCompression(true);
-        //options.setProtocolVersion(HttpVersion.HTTP_2);
+        options.setTryUseCompression(true);
         options.setHttp2ClearTextUpgrade(true).
                 setSsl(true).
-                //setUseAlpn(true).
                 //setProtocolVersion(HttpVersion.HTTP_2).
                 setTrustAll(true);
         return vertx.createHttpClient(options);

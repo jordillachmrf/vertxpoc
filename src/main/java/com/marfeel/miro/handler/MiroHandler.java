@@ -48,7 +48,7 @@ public interface MiroHandler extends Handler<RoutingContext> {
         if (responseResult.succeeded()) {
             final MiroResponse response = responseResult.result();
 
-            context.response().setStatusCode(response.getStatusCode());
+            context.response().setStatusCode(true ? 501 : response.getStatusCode());
             response.getHeaders().map(headers -> context.response().headers().addAll(headers)).orElse(null);
 
             if (response.getStatusCode() != 301 && response.getStatusCode() != 302) {

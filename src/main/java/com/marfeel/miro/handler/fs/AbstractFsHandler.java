@@ -15,13 +15,12 @@ public abstract class AbstractFsHandler implements MiroHandler {
 
     private final Vertx vertx;
     private final Path path;
-    private final String html;
+    //private final String html;
 
     protected  AbstractFsHandler(Vertx vertx, String fileName) {
         this.vertx = Objects.requireNonNull(vertx, "Vertx can not be null");
         this.path = Paths.get(this.getClass().getResource("/"+fileName).getPath());
-
-        this.html = vertx.fileSystem().readFileBlocking(path.toString()).toString();
+        //this.html = vertx.fileSystem().readFileBlocking(path.toString()).toString();
     }
 
     @Override

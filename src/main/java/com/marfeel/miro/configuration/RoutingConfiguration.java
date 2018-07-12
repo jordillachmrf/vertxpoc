@@ -7,7 +7,7 @@ import com.marfeel.miro.handler.fs.BigFsHandler;
 import com.marfeel.miro.handler.fs.JsoupBigFsHandler;
 import com.marfeel.miro.handler.fs.JsoupSmallFsHandler;
 import com.marfeel.miro.handler.fs.SmallFsHandler;
-import com.marfeel.miro.service.FetchService;
+import com.marfeel.miro.service.IFetchService;
 import com.marfeel.miro.service.MiroService;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
@@ -34,7 +34,7 @@ public class RoutingConfiguration {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Consumer<Router> addMarfeelRoutes(final Vertx vertx, final MiroService miroService, final FetchService fetchService) {
+    public Consumer<Router> addMarfeelRoutes(final Vertx vertx, final MiroService miroService, final IFetchService fetchService) {
         return router -> {
             Assert.notNull(router, "Router can not be null");
             Assert.notNull(miroService, "MiroService can not be null");
@@ -52,7 +52,7 @@ public class RoutingConfiguration {
         };
     }
 
-    private FetchHandler fetchHandler(FetchService fetchService) {
+    private FetchHandler fetchHandler(IFetchService fetchService) {
         return new FetchHandler(fetchService);
     }
 

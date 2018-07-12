@@ -17,7 +17,7 @@ package com.marfeel.miro.handler.fetch;
 import com.marfeel.miro.handler.MiroHandler;
 import com.marfeel.miro.handler.MiroRequest;
 import com.marfeel.miro.handler.MiroResponse;
-import com.marfeel.miro.service.FetchService;
+import com.marfeel.miro.service.IFetchService;
 import io.vertx.core.Future;
 import io.vertx.ext.web.RoutingContext;
 
@@ -25,15 +25,15 @@ import java.util.Objects;
 
 public class FetchHandler implements MiroHandler {
 
-    private final FetchService fetchService;
+    private final IFetchService IFetchService;
 
-    public FetchHandler(FetchService fetchService) {
-        this.fetchService = Objects.requireNonNull(fetchService, "FetchService can not be null");
+    public FetchHandler(IFetchService fetchService) {
+        this.IFetchService = Objects.requireNonNull(fetchService, "FetchService can not be null");
     }
 
     @Override
     public Future<MiroResponse> processRequest(RoutingContext context, MiroRequest request) {
-        return fetchService.fetchUrl(request);
+        return IFetchService.fetchUrl(request);
     }
 
 }

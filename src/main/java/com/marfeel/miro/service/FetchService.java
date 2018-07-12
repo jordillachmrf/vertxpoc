@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-public class FetchService {
+public class FetchService implements IFetchService {
 
     private final Logger L = LoggerFactory.getLogger(FetchService.class);
 
@@ -23,6 +23,7 @@ public class FetchService {
         this.fetchTimeOut = fetchTimeOut <= 0 ? 1000 : fetchTimeOut;
     }
 
+    @Override
     public Future<MiroResponse> fetchUrl(MiroRequest miroRequest) {
         Future<MiroResponse> future = Future.future();
 
@@ -31,7 +32,7 @@ public class FetchService {
         ).exceptionHandler(exception -> future.fail(exception)).setTimeout(fetchTimeOut).setFollowRedirects(false);
 
         miroRequest.getHeaders().names().forEach(header -> {
-           if (!"Accept-Encoding".equalsIgnoreCase(header)) {
+           if (!"Accept-Encoding".equalsIgnoreCase(header) && !"Host".equalsIgnoreCase(header)) {
                request.putHeader(header, miroRequest.getHeaders().get(header));
            }
         });

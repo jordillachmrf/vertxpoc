@@ -12,6 +12,7 @@ import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.json.Json;
+import io.vertx.ext.dropwizard.DropwizardMetricsOptions;
 import io.vertx.ext.web.Router;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -38,7 +39,9 @@ public class AppConfiguration {
 
     @Bean
     Vertx vertx(@Value("${vertx.worker-pool-size}") Integer workerPoolSize) {
-        return Vertx.vertx(new VertxOptions().setWorkerPoolSize(workerPoolSize));
+        return Vertx.vertx(new VertxOptions().setWorkerPoolSize(workerPoolSize).setMetricsOptions(
+                new DropwizardMetricsOptions().setEnabled(true).setJmxEnabled(true)
+        ));
     }
 
     @Bean

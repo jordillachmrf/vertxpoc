@@ -53,11 +53,26 @@
             <artifactId>vertx-web</artifactId>
             <version>${vertx.version}</version>
         </dependency>
-        <!-- dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-sync</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-dropwizard-metrics</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web-client</artifactId>
             <version>${vertx.version}</version>
-        </dependency -->
+        </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-config</artifactId>
@@ -197,6 +212,41 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Quasar Fiber stuff -->
+            <plugin>
+                <groupId>com.vlkan</groupId>
+                <artifactId>quasar-maven-plugin</artifactId>
+                <version>0.7.9</version>
+                <configuration>
+                    <check>true</check>
+                    <debug>true</debug>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>instrument</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <mainClass>com.marfeel.miro.FiberLauncher</mainClass>
+                    <workingDirectory>target/classes</workingDirectory>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-Dco.paralleluniverse.fibers.verifyInstrumentation=false</argument>
+                        <!-- argument>-javaagent:/Users/jordillach/Downloads/quasar-core-0.7.10.jar</argument -->
+                        <argument>-javaagent:${co.paralleluniverse:quasar-core:jar}</argument>
+                    </arguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>

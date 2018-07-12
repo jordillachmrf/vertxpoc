@@ -13,16 +13,16 @@ import java.util.Objects;
 
 public class MiroService {
 
-    private final FetchService fetchService;
+    private final IFetchService IFetchService;
     private final List<MiroAnalyzer> analyzerList;
 
-    public MiroService(FetchService fetchService, List<MiroAnalyzer> analyzerList) {
-        this.fetchService = Objects.requireNonNull(fetchService, "FetchService can not be null");
+    public MiroService(IFetchService fetchService, List<MiroAnalyzer> analyzerList) {
+        this.IFetchService = Objects.requireNonNull(fetchService, "FetchService can not be null");
         this.analyzerList = Objects.requireNonNull(analyzerList, "MiroAnalyzers can not be null");
     }
 
     public Future<MiroResponse> readAndDecorateUrl(MiroRequest request) {
-        return this.fetchService.fetchUrl(request).compose(this::handleResult);
+        return this.IFetchService.fetchUrl(request).compose(this::handleResult);
     }
 
     private Future<MiroResponse> handleResult(MiroResponse result) {

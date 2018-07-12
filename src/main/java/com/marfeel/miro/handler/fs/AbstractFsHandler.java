@@ -15,10 +15,13 @@ public abstract class AbstractFsHandler implements MiroHandler {
 
     private final Vertx vertx;
     private final Path path;
+    private final String html;
 
     protected  AbstractFsHandler(Vertx vertx, String fileName) {
         this.vertx = Objects.requireNonNull(vertx, "Vertx can not be null");
         this.path = Paths.get(this.getClass().getResource("/"+fileName).getPath());
+
+        this.html = vertx.fileSystem().readFileBlocking(path.toString()).toString();
     }
 
     @Override
@@ -28,8 +31,9 @@ public abstract class AbstractFsHandler implements MiroHandler {
 
     @Override
     public Future<MiroResponse> processRequest(RoutingContext context, MiroRequest request) {
-        Future future = Future.future();
+        //return Future.succeededFuture(new MiroResponse(this.html, null, 200));
 
+        Future future = Future.future();
         vertx.fileSystem().readFile(path.toString(), ar -> {
             if (ar.succeeded()) {
                 future.complete(new MiroResponse(ar.result().toString(), null, 200));
@@ -37,7 +41,6 @@ public abstract class AbstractFsHandler implements MiroHandler {
                 future.fail(ar.cause());
             }
         });
-
         return future;
     }
 }

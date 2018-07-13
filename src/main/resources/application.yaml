@@ -11,4 +11,4 @@ http:
   port: 8080
 http-client:
   max-pool-size: 8196
-  connect-timeout-ms: 2000
+  connect-timeout-ms: 1500

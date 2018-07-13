@@ -32,7 +32,7 @@ public class FetchService implements IFetchService {
         ).exceptionHandler(exception -> future.fail(exception)).setTimeout(fetchTimeOut).setFollowRedirects(false);
 
         miroRequest.getHeaders().names().forEach(header -> {
-           if (!"Accept-Encoding".equalsIgnoreCase(header) && !"Host".equalsIgnoreCase(header)) {
+           if (!"Accept-Encoding".equalsIgnoreCase(header)) {
                request.putHeader(header, miroRequest.getHeaders().get(header));
            }
         });
